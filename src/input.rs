@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CreateOrderInput {
     pub price: u32,

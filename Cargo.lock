@@ -262,6 +262,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "axum-macros"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "604fde5e028fea851ce1d8570bbdc034bec850d157f7569d10f347d06808c05c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.106",
+]
+
+[[package]]
 name = "backtrace"
 version = "0.3.75"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1635,10 +1646,12 @@ name = "rust-order-book"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "axum-macros",
  "cargo-watch",
  "serde",
  "serde_json",
  "tokio",
+ "uuid",
 ]
 
 [[package]]
@@ -2162,6 +2175,17 @@ name = "unicode-width"
 version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7dd6e30e90baa6f72411720665d41d89b9a3d039dc45b8faea1ddd07f617f6af"
+
+[[package]]
+name = "uuid"
+version = "1.18.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2f87b8aa10b915a06587d0dec516c282ff295b475d94abf425d62b57710070a2"
+dependencies = [
+ "getrandom 0.3.3",
+ "js-sys",
+ "wasm-bindgen",
+]
 
 [[package]]
 name = "vec_map"

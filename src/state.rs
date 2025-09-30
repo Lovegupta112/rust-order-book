@@ -1,7 +1,8 @@
 use super::input::Side;
+use crate::input::CreateOrderInput;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-
+use uuid::Uuid;
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Orderbook {
     pub bids: HashMap<u32, Vec<UserOrder>>,
@@ -10,9 +11,9 @@ pub struct Orderbook {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UserOrder {
-    user_id: String,
+    user_id: u32,
     qty: u32,
-    order_id: u32,
+    order_id: String,
 }
 
 pub fn order_already_exist(order: UserOrder, order_book: &mut Orderbook, is_bid: bool) {
@@ -21,18 +22,18 @@ pub fn order_already_exist(order: UserOrder, order_book: &mut Orderbook, is_bid:
     } else {
         &mut order_book.asks
     };
-
-    if order_type.contains_key(&order.order_id) {
-        let order_value = order_type.get(&order.order_id).unwrap();
-        order_type.insert(order.order_id, order_value.clone());
-    } else {
-        let new_order = vec![UserOrder {
-            user_id: order.user_id,
-            qty: order.qty,
-            order_id: order.order_id,
-        }];
-        order_type.insert(order.order_id, new_order);
-    }
+    //
+    // if order_type.contains_key(&order.price) {
+    //     let order_value = order_type.get(&order.price).unwrap();
+    //     order_type.insert(order.price, order_value.clone());
+    // } else {
+    //     let new_order = vec![UserOrder {
+    //         user_id: order.user_id,
+    //         qty: order.qty,
+    //         order_id: order.order_id,
+    //     }];
+    //     order_type.insert(order.price, new_order);
+    // }
 }
 
 impl Orderbook {
@@ -43,15 +44,15 @@ impl Orderbook {
         }
     }
 
-    pub fn add_order(&mut self, user_order: UserOrder, side: Side) {
+    pub fn add_order(&mut self, user_order: &CreateOrderInput) {
         let order = vec![UserOrder {
             user_id: user_order.user_id,
-            qty: user_order.qty,
-            order_id: user_order.order_id,
+            qty: user_order.quantity,
+            order_id: Uuid::new_v4().to_string(),
         }];
-        match side {
-            Side::Buy => self.asks.insert(user_order.order_id, order),
-            Side::Sell => self.bids.insert(user_order.order_id, order),
+        match user_order.side {
+            Side::Buy => self.bids.insert(user_order.price, order),
+            Side::Sell => self.asks.insert(user_order.price, order),
         };
     }
 
